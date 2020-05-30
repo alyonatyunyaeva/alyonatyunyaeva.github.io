@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+
+  <body>
+    <div class="subhead"> 
+      <div>
+        <h1>С помощью React</h1>
+        <div id="react_insertion"></div>
+      </div>
+      <div>
+        <h1 >Чистый JS</h1>
+        <div id='container-div-js' class='bigQ-pure-js'></div>
+      </div>
+      <div>
+        <h1 >Только CSS</h1>
+        <div id='container-div-css' class='bigQ-css'></div>
+      </div>
+    </div>
+
+    <script type="text/babel">
+      class OneSquare extends React.Component {
+        constructor(props){
+          super(props);
+          this.state = {
+            active: false
+          }
+          this.onMouseOverHandler=this.onMouseOverHandler.bind(this);
+          this.onMouseOutHandler=this.onMouseOutHandler.bind(this);
+        }
+        toggle() {
+            this.setState(prevState => ({
+                active: !prevState.active
+            }));
+        }
+        onMouseOverHandler(){
+          this.toggle();
+        }
+        onMouseOutHandler(){
+          setTimeout(this.onMouseOverHandler, 1500)
+        }
+        render(){
+          return (
+              <div className={ 'littleQ ' + (this.state.active ? 'colorBlack': '') }  onMouseOver={this.onMouseOverHandler} onMouseOut={this.onMouseOutHandler}></div>
+          )
+        }
+      };
+
+      class MySquares extends React.Component {
+            renderListOfSquare(){
+                let squareArray=[];
+                for(let i=0; i<10000; i++){
+                squareArray.push(<OneSquare />)
+                };
+                return squareArray;
+        }
+        render(){
+          return(
+            <div className='bigQ'>           
+              {this.renderListOfSquare()}
+            </div>
+          )
+        }
+      }
+      const domContainer = document.querySelector('#react_insertion');
+      ReactDOM.render(<MySquares/>, domContainer);
+    </script>
+    <script type="text/javascript" src="pure_js.js"></script>
+    <script type="text/javascript" src="with-css.js"></script>
+  </body>
+
+</html>
